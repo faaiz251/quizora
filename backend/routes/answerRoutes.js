@@ -15,8 +15,8 @@ answerrouter.post("/submit-answer", authenticateUser, async (req, res) => {
       contents: [{ role: "user", parts: [{ text: prompt }] }],
     });
 
-    const rest = response.text;
-    const cleaned = rest.trim().toLowerCase();
+    const rest = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+    const cleaned = (rest || "").trim().toLowerCase();
     const isCorrect = cleaned.includes("yes");
     let message = "";
 

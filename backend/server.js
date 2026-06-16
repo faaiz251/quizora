@@ -13,8 +13,19 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = [
+  'https://quizora-dusky.vercel.app',
+  'http://localhost:5173',
+];
+
 app.use(cors({
-  origin: 'https://quizora-dusky.vercel.app', // or your frontend production URL
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 app.use(express.json());
